@@ -23,5 +23,5 @@
 	header_up X-Forwarded-Port {http.request.remote.port}
 }
 
-import *.caddy
+import ./site_conf/*.caddy
 # caddy fmt --overwrite
