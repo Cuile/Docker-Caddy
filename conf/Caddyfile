@@ -1,0 +1,27 @@
+# 通用配置
+(COMMON_CONFIG) {
+	# 压缩支持
+	encode zstd gzip
+	# 参考，但不建议使用，TLS 配置采用 https://mozilla.github.io/server-side-tls/ssl-config-generator/ 生成，SSL Labs 评分 A+
+	tls lele.cui@gmail.com {
+    	protocols tls1.2 tls1.3
+    	ciphers TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256 TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256 TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384 TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384 TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256 TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256
+		# enables On-Demand TLS
+		on_demand
+	}
+	# 测试时使用
+	# tls internal
+	
+	# HSTS (63072000 seconds)
+	header Strict-Transport-Security "max-age=63072000"
+}
+# 反向代理header设置
+(REVERSE_PROXY_HEADER_CONFIG) {
+	# 要传输给upstream的header
+	header_up Host {http.reverse_proxy.upstream.hostport}
+	header_up X-Real-IP {http.request.remote.host}
+	header_up X-Forwarded-Port {http.request.remote.port}
+}
+
+import *.caddy
+# caddy fmt --overwrite
